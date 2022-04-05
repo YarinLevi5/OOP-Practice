@@ -1,12 +1,9 @@
-//class for animals with four legs
-abstract class AnimalsWithFourLegs {
+abstract class Animal {
   protected _name: string = "";
-  protected _legs: number = 0;
   protected _voice: string = "";
 
-  constructor(name: string, legs: number, voice: string) {
+  constructor(name: string, voice: string) {
     this.setName(name);
-    this.getNumberOfLegs(legs);
     this._voice = voice;
   }
   setName(name: string) {
@@ -16,32 +13,34 @@ abstract class AnimalsWithFourLegs {
       throw new Error("Change your name");
     }
   }
+
+  makeNoise(): void {
+    console.log("I can make noise");
+  }
+}
+
+//class for animals with four legs
+abstract class AnimalsWithFourLegs extends Animal {
+  protected _legs: number = 0;
+  constructor(name: string, legs: number, voice: string) {
+    super(name, voice);
+    this.getNumberOfLegs(legs);
+  }
   getNumberOfLegs(legs: number) {
     return (this._legs = legs);
-  }
-  makeNoise(): string {
-    return "I can make noise";
   }
 }
 
 //class for animals with wings
-abstract class AnimalsWithWings {
-  protected _name: string = "";
+abstract class AnimalsWithWings extends Animal {
   protected _legs: number = 0;
   protected _wings: number = 0;
-  protected _voice: string = "";
   constructor(name: string, legs: number, wings: number, voice: string) {
-    this.getName(name);
+    super(name, voice);
     this._legs = legs;
     this.setWings(wings);
-    this._voice = voice;
   }
-  makeNoise(): void {
-    console.log("I can make noise");
-  }
-  getName(name: string) {
-    return (this._name = name);
-  }
+
   setWings(wings: number) {
     if (wings === 2) {
       this._wings = wings;
@@ -52,22 +51,12 @@ abstract class AnimalsWithWings {
 }
 
 //class for animals in the sea
-abstract class SeaAnimals {
-  protected _name: string = "";
-  protected _voice: string = "";
+abstract class SeaAnimals extends Animal {
   protected _gender: string = "";
 
   constructor(name: string, voice: string, gender: string) {
-    this.getName(name);
-    this.getVoice(voice);
+    super(name, voice);
     this._gender = gender;
-  }
-
-  getName(name: string) {
-    return (this._name = name);
-  }
-  getVoice(voice: string) {
-    return (this._voice = voice);
   }
 }
 
@@ -120,8 +109,8 @@ class Eagle extends AnimalsWithWings implements Fly, Escape {
   canEscape(): boolean {
     return true;
   }
-  override makeNoise(): void {
-    console.log("rkrkrkr");
+  override makeNoise(): string {
+    return "rkrkrkr";
   }
 }
 
@@ -142,11 +131,13 @@ class Fish extends SeaAnimals {
   constructor(name: string, voice: string, gender: string) {
     super(name, voice, gender);
   }
+  override makeNoise(): void {}
 }
 class Shark extends SeaAnimals {
   constructor(name: string, voice: string, gender: string) {
     super(name, voice, gender);
   }
+  override makeNoise(): void {}
 }
 
 let cat = new Cat("lola", 4, "mioooo");
@@ -155,4 +146,3 @@ let eagle = new Eagle("eigi", 2, 2, "rrr", 1.2);
 let pinguin = new Pinguin("pip", 2, 2);
 let shark = new Shark("sharki", "", "female");
 let fish = new Fish("fishing", "", "male");
-console.log(pinguin);
